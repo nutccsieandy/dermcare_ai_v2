@@ -1,0 +1,3 @@
+<?php require_once __DIR__.'/../includes/layout.php'; require_admin(); render_header('後台');
+$counts=[]; foreach(['users','products','recommendation_logs','favorites'] as $t){$counts[$t]=db()->query("SELECT COUNT(*) c FROM $t")->fetch()['c'];} ?>
+<h1>後台管理</h1><section class="grid"><div class="card"><h3>會員</h3><p class="price"><?=$counts['users']?></p></div><div class="card"><h3>商品</h3><p class="price"><?=$counts['products']?></p></div><div class="card"><h3>推薦紀錄</h3><p class="price"><?=$counts['recommendation_logs']?></p></div></section><div class="actions"><a class="btn" href="products.php">商品管理</a><a class="btn secondary" href="logs.php">推薦紀錄</a></div><?php render_footer(); ?>

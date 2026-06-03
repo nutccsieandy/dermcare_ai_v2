@@ -1,0 +1,7 @@
+<?php require_once __DIR__.'/../includes/layout.php'; require_admin();
+if($_SERVER['REQUEST_METHOD']==='POST'){
+ $st=db()->prepare('INSERT INTO products(brand,name,category,price,skin_types,concerns,ingredients,avoid_for,description) VALUES(?,?,?,?,?,?,?,?,?)');
+ $st->execute([$_POST['brand'],$_POST['name'],$_POST['category'],$_POST['price'],$_POST['skin_types'],$_POST['concerns'],$_POST['ingredients'],$_POST['avoid_for'],$_POST['description']]); flash('商品已新增'); header('Location: products.php'); exit;
+}
+render_header('商品管理'); $rows=db()->query('SELECT * FROM products ORDER BY id DESC')->fetchAll(); ?>
+<h1>商品管理</h1><div class="panel"><form class="form" method="post"><div class="form-row"><input name="brand" placeholder="品牌" required><input name="name" placeholder="商品名稱" required></div><div class="form-row"><input name="category" placeholder="分類" required><input name="price" type="number" placeholder="價格" required></div><div class="form-row"><input name="skin_types" placeholder="適合膚質"><input name="concerns" placeholder="需求標籤"></div><input name="ingredients" placeholder="主要成分"><input name="avoid_for" placeholder="不建議族群或成分提醒"><textarea name="description" placeholder="商品說明"></textarea><button>新增商品</button></form></div><br><div class="table-wrap"><table><tr><th>ID</th><th>品牌</th><th>商品</th><th>分類</th><th>價格</th></tr><?php foreach($rows as $r): ?><tr><td><?=h($r['id'])?></td><td><?=h($r['brand'])?></td><td><?=h($r['name'])?></td><td><?=h($r['category'])?></td><td><?=h($r['price'])?></td></tr><?php endforeach; ?></table></div><?php render_footer(); ?>

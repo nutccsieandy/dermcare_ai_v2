@@ -1,0 +1,3 @@
+<?php require_once __DIR__.'/includes/layout.php'; require_login(); render_header('我的收藏');
+$st=db()->prepare('SELECT p.* FROM favorites f JOIN products p ON p.id=f.product_id WHERE f.user_id=? ORDER BY f.id DESC');$st->execute([current_user()['id']]);$products=$st->fetchAll(); ?>
+<h1>我的收藏</h1><div class="products"><?php foreach($products as $p): ?><div class="product"><h3><?=h($p['brand'])?>｜<?=h($p['name'])?></h3><p><?=h($p['description'])?></p><p class="small"><?=h($p['ingredients'])?></p><div class="price">NT$ <?=h($p['price'])?></div></div><?php endforeach; ?></div><?php render_footer(); ?>

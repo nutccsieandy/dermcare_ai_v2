@@ -1,0 +1,3 @@
+<?php require_once __DIR__.'/includes/layout.php'; render_header('推薦紀錄');
+$u=current_user(); if($u){$st=db()->prepare('SELECT * FROM recommendation_logs WHERE user_id=? OR user_id IS NULL ORDER BY id DESC LIMIT 30');$st->execute([$u['id']]);}else{$st=db()->query('SELECT * FROM recommendation_logs WHERE user_id IS NULL ORDER BY id DESC LIMIT 10');}$rows=$st->fetchAll(); ?>
+<h1>推薦紀錄</h1><div class="table-wrap"><table><tr><th>時間</th><th>膚質</th><th>需求</th><th>預算</th><th>AI摘要</th></tr><?php foreach($rows as $r): ?><tr><td><?=h($r['created_at'])?></td><td><?=h($r['skin_type'])?></td><td><?=h($r['goal'])?></td><td><?=h($r['budget'])?></td><td><?=nl2br(h(mb_substr($r['ai_response'],0,180)))?>...</td></tr><?php endforeach; ?></table></div><?php render_footer(); ?>
